@@ -1,0 +1,17 @@
+/.bundle/
+/.yardoc
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
+
+# rspec failure tracking
+.rspec_status
+
+# Gemfile.lock should be excluded from a gem
+#
+# https://stackoverflow.com/questions/4151495/should-gemfile-lock-be-included-in-gitignore
+
+Gemfile.lock
