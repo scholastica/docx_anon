@@ -39,9 +39,30 @@ RSpec.describe DocxAnon do
       end
 
       it "removes LastModifiedBy field" do
-        expect(meta_data[:creator]).to be_falsy
+        expect(meta_data[:last_modified_by]).to be_falsy
+      end
+    end
+
+    # Note `lastModifiedBy` is not but `cp:creator` is.
+    context "given a source file where some fields are namespaced and some are not" do
+      before(:all) do
+        `rm -rf #{DocxAnon.config.output_dir}`
+        described_class.clean("spec/fixtures/author-created-not-in-namespace.docx")
       end
 
+      subject(:meta_data) {
+        e = Exiftool.new("#{DocxAnon.config.output_dir}/sanitized/author-created-not-in-namespace.docx")
+        e.to_hash
+      }
+
+      it "removes creator field" do
+        expect(meta_data[:creator]).to be_falsy
+        expect(meta_data[:core_properties_creator]).to be_falsy
+      end
+
+      it "removes LastModifiedBy field" do
+        expect(meta_data[:core_properties_last_modified_by]).to be_falsy
+      end
     end
 
     context "given a file with comments" do
